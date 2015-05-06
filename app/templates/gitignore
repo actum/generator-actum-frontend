@@ -1,0 +1,21 @@
+# system files
+.DS_STORE
+
+# NPM modules
+/node_modules/
+npm-debug.log
+
+# Bower libraries
+/www/bower/
+
+# Compiled CSS
+/www/css/
+
+# Compiled JS
+/www/js/
+
+# Compiled HTML
+/www/*.html
+
+# Built static files (dist)
+# Place prototype and production dist folders here

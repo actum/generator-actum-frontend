@@ -1,0 +1,26 @@
+{
+  "name": "<%= appSlug %>",
+  "title": "<%= appName %>",
+  "description": "<%= appDescription %>",
+  "version": "<%= appVersion %>",
+  "homepage": "<%= appHomepage %>",
+  "author": {
+    "name": "Actum",
+    "email": "actum@actum.cz",
+    "url": "http://www.actum.cz/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "…"
+  },
+  "bugs": {
+    "url": ""
+  },
+  "licenses": [
+    {
+      "type": "none",
+      "url": "http://www.actum.cz//blob/master/LICENSE-none"
+    }
+  ],
+  "keywords": []
+}

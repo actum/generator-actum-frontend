@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!--[if IE 8]>         <html lang="cs" class="no-js lt-ie10 lt-ie9"> <![endif]-->
+<!--[if lte IE 9]>     <html lang="cs" class="no-js lt-ie10"> <![endif]-->
+<!--[if gt IE 9]><!--> <html lang="cs" class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <title>{{title}}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="description" content="…">
+        <meta name="keywords" content="…">
+        {{!--
+        Describe alternate language version if present:
+        <link rel="alternate" hreflang="en" href="http://actum.cz/en/"> --}}
+        {{#if environment.devel}}
+            <link rel="stylesheet" href="css/style.css">
+            <!--[if lt IE 9]>
+                <% if (includeBabel) { %><script src="bower/es5-shim/es5-shim.js"></script>
+                <script src="bower/es5-shim/es5-sham.js"></script>
+                <% } %><script src="bower/respond/src/respond.js"></script>
+            <![endif]--><% if (includeModernizr) { %>
+            <script src="bower/modernizr/modernizr.js"></script><% } %>
+        {{else}}
+            <link rel="stylesheet" href="css/style.min.css">
+            <!--[if lt IE 9]>
+                <script src="js/legacy.min.js"></script>
+            <![endif]--><% if (includeModernizr) { %>
+            <script src="js/modernizr.js"></script><% } %>
+        {{/if}}
+        <script>
+            // Picture element HTML5 shiv
+            document.createElement('picture');
+        </script>
+        <script src="js/picturefill.min.js" async></script><% if (includeGrunticon) { %>
+        <script src="gfx/icon/grunticon.loader.js"></script><% } %><% if (includeGrunticon || !includeModernizr) { %>
+        <script><% if (!includeModernizr) { %>
+            document.documentElement.className = document.documentElement.className.replace("no-js", "js");<% } %><% if (includeGrunticon) { %>
+            grunticon(['gfx/icon/icons.data.svg.css', 'gfx/icon/icons.data.png.css', 'gfx/icon/icons.fallback.css'], grunticon.svgLoadedCallback);<% } %>
+        </script><% } %>
+    </head>
+    <body>
+        {{> header}}
+        <div class="content">
+            {{> body }}
+        </div>
+        {{> footer}}
+
+        {{#if environment.devel}}
+            <% if (includeJquery) { %><script src="bower/jquery/dist/jquery.js"></script>
+            <% } %><script src="js/app-compiled.js"></script>
+        {{else}}
+            <% if (includeJquery) { %><script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+            <% } %><script src="js/app-compiled.min.js"></script>
+        {{/if}}
+        <script>
+            var config = {};
+            app.start(config);
+        </script>
+    </body>
+</html>

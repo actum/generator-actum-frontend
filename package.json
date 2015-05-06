@@ -1,0 +1,32 @@
+{
+  "name": "generator-actum-frontend",
+  "version": "0.0.0",
+  "description": "Yeoman generator",
+  "license": "MIT",
+  "main": "app/index.js",
+  "repository": "actum/generator-actum-frontend",
+  "author": {
+    "name": "Actum",
+    "email": "",
+    "url": "https://github.com/actum"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "files": [
+    "app"
+  ],
+  "keywords": [
+    "yeoman-generator"
+  ],
+  "dependencies": {
+    "chalk": "^1.0.0",
+    "lodash": "^3.8.0",
+    "mkdirp": "^0.5.0",
+    "yeoman-generator": "^0.19.0",
+    "yosay": "^1.0.2"
+  },
+  "devDependencies": {
+    "mocha": "*"
+  }
+}
