@@ -281,8 +281,8 @@ module.exports = function(grunt) {
 
         modernizr: {
             dist: {
-                'devFile' : '<%= bower %>/modernizr/modernizr.js',
-                'outputFile' : '<%= js %>/modernizr.js',
+                'devFile' : '<%%= bower %>/modernizr/modernizr.js',
+                'outputFile' : '<%%= js %>/modernizr.js',
                 'extra' : {
                     'shiv' : true,
                     'printshiv' : true,
@@ -326,7 +326,7 @@ module.exports = function(grunt) {
 
                 // Have custom Modernizr tests? Add paths to their location here.
                 'customTests' : [
-                    // '<%= bower %>/modernizr/feature-detects/css-vhunit.js'
+                    // '<%%= bower %>/modernizr/feature-detects/css-vhunit.js'
                 ]
             }
         },<% } %>

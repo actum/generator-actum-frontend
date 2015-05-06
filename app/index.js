@@ -26,7 +26,6 @@ module.exports = yeoman.generators.Base.extend({
     promptUser: function() {
         var done = this.async();
 
-        // Greet the user
         this.log(yosay('Actum Frontend Generator powered by Yeoman'));
 
         var prompts = [{
@@ -160,8 +159,7 @@ module.exports = yeoman.generators.Base.extend({
             if (this.includeHandlebars) {
                 packageJson.browserify.transform.push('hbsfy');
             }
-
-            // TODO "handlebars": "./node_modules/grunt-contrib-handlebars/node_modules/handlebars/dist/handlebars.runtime.js",
+            // TODO if includeHandlebars then add "browser" section with "handlebars": "./node_modules/grunt-contrib-handlebars/node_modules/handlebars/dist/handlebars.runtime.js"
         }
 
         this.write('package.json', JSON.stringify(packageJson, null, 2));
@@ -238,13 +236,13 @@ module.exports = yeoman.generators.Base.extend({
                 packages.push('grunt-modernizr');
             }
             if (this.includeGrunticon) {
-                packages.push('grunt-grunticon', 'grunt-svgmin');
+                // TODO grunticon/phantomjs causes "npm ERR! cb() never called!" -> prevents devDependencies from being saved
+                // packages.push('grunt-grunticon', 'grunt-svgmin');
             }
             if (this.includeRsync) {
                 packages.push('grunt-rsync');
             }
 
-            // todo save dependencies
             this.npmInstall(packages, { 'saveDev': true });
         },
 
@@ -264,15 +262,22 @@ module.exports = yeoman.generators.Base.extend({
             if (this.includeModernizr) {
                 components.push('modernizr');
             }
-            // TODO handlebars?
 
             this.bowerInstall(components, { 'save': true });
         }
     },
 
-    sanitize: function() {
-        this.on('end', function() {
+    end: {
+        bootstrap: function() {
+            // todo what if file doesn't exist?
+            var bootstrapLess = this.read(this.destinationPath('www/bower/bootstrap/less/bootstrap.less'));
+            bootstrapLess = bootstrapLess.replace(/"/g, '\'').replace(/(@import ')/g, '@import \'../../bower/bootstrap/less/');
+            // todo comment out optional bs files?
+            this.write('www/less/bootstrap/bootstrap.less', bootstrapLess);
+        },
+
+        bye: function() {
             this.log(chalk.magenta.bold('\nHappy coding!\n'));
-        });
+        }
     }
 });
