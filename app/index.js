@@ -21,6 +21,8 @@ module.exports = yeoman.generators.Base.extend({
 
         // fix yeoman warning: "#mkdir() is deprecated. Use mkdirp module instead."
         this.mkdir = mkdirp;
+
+        this.customErrors = [];
     },
 
     promptUser: function() {
@@ -236,14 +238,22 @@ module.exports = yeoman.generators.Base.extend({
                 packages.push('grunt-modernizr');
             }
             if (this.includeGrunticon) {
-                // TODO grunticon/phantomjs causes "npm ERR! cb() never called!" -> prevents devDependencies from being saved
-                // packages.push('grunt-grunticon', 'grunt-svgmin');
+                packages.push('grunt-grunticon', 'grunt-svgmin');
             }
             if (this.includeRsync) {
                 packages.push('grunt-rsync');
             }
 
-            this.npmInstall(packages, { 'saveDev': true });
+            this.npmInstall(packages, { 'saveDev': true }, function(err) {
+                if (err === 0) {
+                    return;
+                }
+
+                this.customErrors.push(
+                    chalk.red('\nNPM install ended with error, dependencies might not have been saved into package.json\n') +
+                    chalk.green('Try running the command manually: ' + chalk.bold('npm install ' + packages.join(' ') + ' --save-dev'))
+                );
+            }.bind(this));
         },
 
         bowerInstall: function() {
@@ -263,7 +273,16 @@ module.exports = yeoman.generators.Base.extend({
                 components.push('modernizr');
             }
 
-            this.bowerInstall(components, { 'save': true });
+            this.bowerInstall(components, { 'save': true }, function(err) {
+                if (err === 0) {
+                    return;
+                }
+
+                this.customErrors.push(
+                    chalk.red('\nBower install ended with error, dependencies might not have been saved into bower.json\n') +
+                    chalk.green('Try running the command manually: ' + chalk.bold('bower install ' + components.join(' ') + ' --save-dev'))
+                );
+            }.bind(this));
         }
     },
 
@@ -276,7 +295,11 @@ module.exports = yeoman.generators.Base.extend({
             this.write('www/less/bootstrap/bootstrap.less', bootstrapLess);
         },
 
-        bye: function() {
+        sanitize: function() {
+            this.customErrors.forEach(function(error) {
+                this.log(error);
+            }.bind(this));
+
             this.log(chalk.magenta.bold('\nHappy coding!\n'));
         }
     }
