@@ -19,6 +19,8 @@ module.exports = yeoman.generators.Base.extend({
     constructor: function() {
         yeoman.generators.Base.apply(this, arguments);
 
+        this.option('skip-install');
+
         // fix yeoman warning: "#mkdir() is deprecated. Use mkdirp module instead."
         this.mkdir = mkdirp;
 
@@ -244,6 +246,15 @@ module.exports = yeoman.generators.Base.extend({
                 packages.push('grunt-rsync');
             }
 
+            if (this.options['skip-install']) {
+                this.customErrors.push(
+                    chalk.yellow('\nNPM install skipped, you might miss project\'s dependencies later…\n') +
+                    chalk.green('You can run the command manually: ' + chalk.bold('npm install ' + packages.join(' ') + ' --save-dev'))
+                );
+
+                return;
+            }
+
             this.npmInstall(packages, { 'saveDev': true }, function(err) {
                 if (err === 0) {
                     return;
@@ -273,6 +284,15 @@ module.exports = yeoman.generators.Base.extend({
                 components.push('modernizr');
             }
 
+            if (this.options['skip-install']) {
+                this.customErrors.push(
+                    chalk.yellow('\nBower install skipped, you might miss project\'s dependencies later…\n') +
+                    chalk.green('You can run the command manually: ' + chalk.bold('bower install ' + components.join(' ') + ' --save'))
+                );
+
+                return;
+            }
+
             this.bowerInstall(components, { 'save': true }, function(err) {
                 if (err === 0) {
                     return;
@@ -280,7 +300,7 @@ module.exports = yeoman.generators.Base.extend({
 
                 this.customErrors.push(
                     chalk.red('\nBower install ended with error, dependencies might not have been saved into bower.json\n') +
-                    chalk.green('Try running the command manually: ' + chalk.bold('bower install ' + components.join(' ') + ' --save-dev'))
+                    chalk.green('Try running the command manually: ' + chalk.bold('bower install ' + components.join(' ') + ' --save'))
                 );
             }.bind(this));
         }
@@ -288,10 +308,18 @@ module.exports = yeoman.generators.Base.extend({
 
     end: {
         bootstrap: function() {
+            if (this.options['skip-install']) {
+                this.customErrors.push(
+                    chalk.yellow('\nI couldn\'n create a fresh bootstrap.less for you because you prompted me not to install bower components…')
+                );
+
+                return;
+            }
+
             // todo what if file doesn't exist?
             var bootstrapLess = this.read(this.destinationPath('www/bower/bootstrap/less/bootstrap.less'));
             bootstrapLess = bootstrapLess.replace(/"/g, '\'').replace(/(@import ')/g, '@import \'../../bower/bootstrap/less/');
-            // todo comment out optional bs files?
+            // todo comment out optional bs files!
             this.write('www/less/bootstrap/bootstrap.less', bootstrapLess);
         },
 
