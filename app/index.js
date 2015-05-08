@@ -9,6 +9,7 @@
 
 'use strict';
 // var path = require('path');
+var fs = require('fs');
 var chalk = require('chalk');
 var yeoman = require('yeoman-generator');
 var mkdirp = require('mkdirp');
@@ -311,21 +312,33 @@ module.exports = yeoman.generators.Base.extend({
         bootstrap: function() {
             if (this.options['skip-install']) {
                 this.customErrors.push(
-                    chalk.yellow('\nI couldn\'n create a fresh bootstrap.less for you because you prompted me not to install bower components…')
+                    chalk.yellow('\nI couldn\'n create a custom bootstrap.less for you because you prompted me not to install bower components…')
                 );
 
                 return;
             }
 
-            // todo what if file doesn't exist? (eg. when bower install failed)
-            var bootstrapLess = this.read(this.destinationPath('www/bower/bootstrap/less/bootstrap.less'));
-            bootstrapLess = bootstrapLess.replace(/"/g, '\'').replace(/(@import ')/g, '// @import \'../../bower/bootstrap/less/');
-            this.enabledBsComponents.forEach(function(component) {
-                var regex = new RegExp('(\/\/ )(.*' + component + '.*)', 'gi');
-                bootstrapLess = bootstrapLess.replace(regex, '$2');
-            });
+            var done = this.async();
 
-            this.write('www/less/bootstrap/bootstrap.less', bootstrapLess);
+            fs.readFile(this.destinationPath('www/bower/bootstrap/less/bootstrap.less'), 'utf8', function(err, data) {
+                if (err) {
+                    this.customErrors.push(
+                        chalk.red(
+                            '\nI couldn\'n create a custom bootstrap.less for you. Source file was not found. ' +
+                            'This is probably because bower install ended with error.\n' + err
+                        )
+                    );
+                } else {
+                    data = data.replace(/"/g, '\'').replace(/(@import ')/g, '// @import \'../../bower/bootstrap/less/');
+                    this.enabledBsComponents.forEach(function(component) {
+                        var regex = new RegExp('(\/\/ )(.*\/' + component + '.*)', 'gi');
+                        data = data.replace(regex, '$2');
+                    });
+                    this.write('www/less/bootstrap/bootstrap.less', data);
+                }
+
+                done();
+            }.bind(this));
         },
 
         sanitize: function() {
