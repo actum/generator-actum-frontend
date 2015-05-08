@@ -25,6 +25,7 @@ module.exports = yeoman.generators.Base.extend({
         this.mkdir = mkdirp;
 
         this.customErrors = [];
+        this.enabledBsComponents = ['variables', 'mixins', 'normalize', 'scaffolding', 'type', 'forms', 'buttons'];
     },
 
     promptUser: function() {
@@ -316,10 +317,14 @@ module.exports = yeoman.generators.Base.extend({
                 return;
             }
 
-            // todo what if file doesn't exist?
+            // todo what if file doesn't exist? (eg. when bower install failed)
             var bootstrapLess = this.read(this.destinationPath('www/bower/bootstrap/less/bootstrap.less'));
-            bootstrapLess = bootstrapLess.replace(/"/g, '\'').replace(/(@import ')/g, '@import \'../../bower/bootstrap/less/');
-            // todo comment out optional bs files!
+            bootstrapLess = bootstrapLess.replace(/"/g, '\'').replace(/(@import ')/g, '// @import \'../../bower/bootstrap/less/');
+            this.enabledBsComponents.forEach(function(component) {
+                var regex = new RegExp('(\/\/ )(.*' + component + '.*)', 'gi');
+                bootstrapLess = bootstrapLess.replace(regex, '$2');
+            });
+
             this.write('www/less/bootstrap/bootstrap.less', bootstrapLess);
         },
 
