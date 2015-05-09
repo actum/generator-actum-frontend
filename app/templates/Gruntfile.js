@@ -190,7 +190,10 @@ module.exports = function(grunt) {
                 '<%%= js %>/*',
                 '<%%= www %>/*.html'
             ]<% if (includeGrunticon) { %>,
-            icon: '<%%= gfx %>/icon/png'<% } %>
+            icon: [
+                '<%%= gfx %>/svg-min',
+                '<%%= gfx %>/icon/png'
+            ]<% } %>
         },
 
         copy: {
@@ -404,7 +407,7 @@ module.exports = function(grunt) {
     grunt.registerTask('dev', ['cssdev', 'jsdev', 'tpldev']);
     grunt.registerTask('cssdev', ['less:dev', 'autoprefixer']);
     grunt.registerTask('css', ['less:production', 'autoprefixer', 'cssmin']);<% if (includeGrunticon) { %>
-    grunt.registerTask('icon', ['svgmin', 'clean:icon', 'grunticon']);<% } %>
+    grunt.registerTask('icon', ['clean:icon', 'svgmin', 'grunticon']);<% } %>
     grunt.registerTask('jsdev', ['jshint:gruntfile', 'jshint:dev', 'jscs', 'browserify:dev']);
     grunt.registerTask('js', ['jshint:gruntfile', 'jshint:production', 'jscs', 'browserify:production', <% if (includeModernizr) { %>'modernizr:dist', <% } %>'uglify:compile']);
     grunt.registerTask('tpldev', ['assemble:dev']);
