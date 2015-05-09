@@ -233,7 +233,7 @@ module.exports = yeoman.generators.Base.extend({
             ];
 
             if (this.includeBabel) {
-                packages.push('babelify');
+                packages.push('babelify', 'react');
             }
             if (this.includeHandlebars) {
                 packages.push('hbsfy');
