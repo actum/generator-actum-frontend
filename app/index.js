@@ -165,7 +165,6 @@ module.exports = yeoman.generators.Base.extend({
             if (this.includeHandlebars) {
                 packageJson.browserify.transform.push('hbsfy');
             }
-            // TODO if includeHandlebars then add "browser" section with "handlebars": "./node_modules/grunt-contrib-handlebars/node_modules/handlebars/dist/handlebars.runtime.js"
         }
 
         this.write('package.json', JSON.stringify(packageJson, null, 2));
@@ -236,7 +235,7 @@ module.exports = yeoman.generators.Base.extend({
                 packages.push('babelify', 'react');
             }
             if (this.includeHandlebars) {
-                packages.push('hbsfy');
+                packages.push('hbsfy', 'handlebars');
             }
             if (this.includeModernizr) {
                 packages.push('grunt-modernizr');

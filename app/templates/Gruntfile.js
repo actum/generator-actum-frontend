@@ -13,7 +13,7 @@ module.exports = function(grunt) {
         js: 'www/js',
         tpl: 'www/tpl',
         prototypeDist: 'dist',
-        dist: '…',
+        dist: 'dist_production_rename',
         bsFiles: {
             src: [
                 '<%%= css %>/style.css',
