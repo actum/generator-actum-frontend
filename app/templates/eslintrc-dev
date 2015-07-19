@@ -1,0 +1,7 @@
+{
+    "rules": {
+        "no-empty": 0,
+        "space-in-parens": 0,
+        "no-unused-vars": 0
+    }
+}

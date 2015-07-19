@@ -91,57 +91,22 @@ module.exports = function(grunt) {
             }
         },<% } %>
 
-        jshint: {
+        eslint: {
             options: {
-                reporter: require('jshint-stylish'),
-
-                curly: true,
-                eqeqeq: true,
-                immed: true,
-                latedef: true,
-                newcap: true,
-                noarg: true,
-                sub: true,
-                undef: true,
-                unused: true,
-                boss: true,
-                eqnull: true,
-                indent: 4,
-                white: false,
-                quotmark: 'single',
-                trailing: true,
-                node: true,
-                jquery: true
+                config: '.eslintrc'
             },
             gruntfile: {
-                src: 'Gruntfile.js'
+                src: ['Gruntfile.js']
             },
             dev: {
                 options: {
-                    undef: false,
-                    unused: false
+                    config: '.eslintrc-dev'
                 },
-                src: [
-                    '<%%= app %>/**/*.js'
-                ]
+                src: '<%= app %>/**/*.js'
             },
             production: {
-                options: {
-                    browser: true
-                },
-                src: [
-                    '<%%= app %>/**/*.js'
-                ]
+                src: '<%= app %>/**/*.js'
             }
-        },
-
-        jscs: {
-            options: {
-                config: '.jscsrc'
-            },
-            src: [
-                '<%%= app %>/**/*.js'
-            ]
         },
 
         browserify: {
@@ -338,7 +303,7 @@ module.exports = function(grunt) {
             options: {
                 dirs: [
                     './',
-                    //'<%%= app %>/**/',
+                    '<%%= app %>/**/',
                     '<%%= styles %>/**/',
                     '<%%= tpl %>/**/'
                 ],
@@ -351,12 +316,11 @@ module.exports = function(grunt) {
             },
             js: function(filepath) {
                 if (filepath === 'Gruntfile.js') {
-                    return 'jshint:gruntfile';
+                    return 'eslint:gruntfile';
                 } else if (filepath === 'www/js/app-compiled.js') {
                     return;
                 } else {
-                    grunt.config(['jshint', 'dev', 'src'], filepath);
-                    grunt.config(['jscs', 'src'], filepath);
+                    grunt.config(['eslint', 'dev', 'src'], filepath);
                     return 'jsdev';
                 }
             },
@@ -400,7 +364,9 @@ module.exports = function(grunt) {
         }<% } %>
     });
 
-    require('jit-grunt')(grunt);
+    require('jit-grunt')(grunt, {
+        eslint: 'gruntify-eslint'
+    });
 
     grunt.registerTask('default', ['dev', 'browserSync:dev', 'esteWatch']);
     grunt.registerTask('nosync', ['dev', 'esteWatch']); // useful for testing in IE8
@@ -408,8 +374,8 @@ module.exports = function(grunt) {
     grunt.registerTask('cssdev', ['less:dev', 'autoprefixer']);
     grunt.registerTask('css', ['less:production', 'autoprefixer', 'cssmin']);<% if (includeGrunticon) { %>
     grunt.registerTask('icon', ['clean:icon', 'svgmin', 'grunticon']);<% } %>
-    grunt.registerTask('jsdev', ['jshint:gruntfile', 'jshint:dev', 'jscs', 'browserify:dev']);
-    grunt.registerTask('js', ['jshint:gruntfile', 'jshint:production', 'jscs', 'browserify:production', <% if (includeModernizr) { %>'modernizr:dist', <% } %>'uglify:compile']);
+    grunt.registerTask('jsdev', ['eslint:gruntfile', 'eslint:dev', 'browserify:dev']);
+    grunt.registerTask('js', ['eslint:gruntfile', 'eslint:production', 'browserify:production', <% if (includeModernizr) { %>'modernizr:dist', <% } %>'uglify:compile']);
     grunt.registerTask('tpldev', ['assemble:dev']);
     grunt.registerTask('tpl', ['assemble:production']);
     grunt.registerTask('prototype', ['clean:prototype', 'copy:prototype', 'cacheBust']);

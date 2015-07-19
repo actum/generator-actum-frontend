@@ -1,0 +1,21 @@
+{
+    "env": {
+        "browser": true,
+        "node": true,
+        "jquery": true
+    },
+    "ecmaFeatures": {
+        "jsx": false
+    },
+    "rules": {
+        "semi": 2,
+        "quotes": [2, "single"],
+        "strict": [2, "never"],
+        "space-after-keywords": [2, "always"],
+        "one-var": [2, "never"],
+        "no-empty": 2,
+        "space-in-parens": [2, "never"],
+        "no-multiple-empty-lines": [2, {max: 1}],
+        "linebreak-style": [2, "unix"]
+    }
+}

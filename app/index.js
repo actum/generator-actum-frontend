@@ -189,8 +189,9 @@ module.exports = yeoman.generators.Base.extend({
         this.template('Gruntfile.js');
     },
 
-    jsLint: function() {
-        this.copy('jscsrc', '.jscsrc');
+    esLint: function() {
+        this.copy('eslintrc', '.eslintrc');
+        this.copy('eslintrc-dev', '.eslintrc-dev');
     },
 
     git: function() {
@@ -221,12 +222,10 @@ module.exports = yeoman.generators.Base.extend({
                 'grunt-contrib-clean',
                 'grunt-contrib-copy',
                 'grunt-contrib-cssmin',
-                'grunt-contrib-jshint',
                 'grunt-contrib-less',
                 'grunt-contrib-uglify',
+                'gruntify-eslint',
                 'grunt-este-watch',
-                'jshint-stylish',
-                'grunt-jscs',
                 'jit-grunt',
                 'picturefill'
             ];
