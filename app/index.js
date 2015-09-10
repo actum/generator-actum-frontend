@@ -232,8 +232,7 @@ module.exports = yeoman.generators.Base.extend({
                 'grunt-contrib-uglify',
                 'gruntify-eslint',
                 'grunt-este-watch',
-                'jit-grunt',
-                'picturefill'
+                'jit-grunt'
             ];
 
             if (this.includeReact) {
