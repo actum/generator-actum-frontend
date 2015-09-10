@@ -337,7 +337,7 @@ module.exports = function(grunt) {
                 bsFiles: '<%%= bsFiles %>',
                 options: {
                     watchTask: true,
-                    port: 1987,
+                    port: <%= bsPortNumber %>,
                     open: false,
                     server: {
                         baseDir: '<%%= www %>'

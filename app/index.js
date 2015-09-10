@@ -190,6 +190,7 @@ module.exports = yeoman.generators.Base.extend({
     },
 
     gruntfile: function() {
+        this.bsPortNumber = Math.floor(Math.random() * (9999 - 3001) + 3001);
         this.template('Gruntfile.js');
     },
 
