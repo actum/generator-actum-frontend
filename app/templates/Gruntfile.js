@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = function(grunt) {
 
     grunt.initConfig({
@@ -21,6 +19,12 @@ module.exports = function(grunt) {
                 '<%%= www %>/*.html'
             ]
         },
+        lessFiles: {
+            '<%%= css %>/style.css': '<%%= styles %>/main.less'
+        },
+        browserifyFiles: {
+            '<%%= js %>/app-compiled.js': ['<%%= app %>/app.js']
+        },
 
         less: {
             options: {
@@ -28,6 +32,7 @@ module.exports = function(grunt) {
                     '<%%= styles %>',
                     '<%%= bower %>'
                 ],
+                plugins: [require('less-plugin-glob')],
                 relativeUrls: true
             },
             dev: {
@@ -38,14 +43,10 @@ module.exports = function(grunt) {
                     sourceMapBasepath: '<%%= www %>',
                     outputSourceFiles: true
                 },
-                files: {
-                    '<%%= css %>/style.css': '<%%= styles %>/main.less'
-                }
+                files: '<%%= lessFiles %>'
             },
             production: {
-                files: {
-                    '<%%= css %>/style.css': '<%%= styles %>/main.less'
-                }
+                files: '<%%= lessFiles %>'
             }
         },
 
@@ -102,10 +103,10 @@ module.exports = function(grunt) {
                 options: {
                     config: '.eslintrc-dev'
                 },
-                src: '<%= app %>/**/*.js'
+                src: '<%%= app %>/**/*.js'
             },
             production: {
-                src: '<%= app %>/**/*.js'
+                src: '<%%= app %>/**/*.js'
             }
         },
 
@@ -115,14 +116,10 @@ module.exports = function(grunt) {
                     debug: true,
                     watch: true
                 },
-                files: {
-                    '<%%= js %>/app-compiled.js': ['<%%= app %>/app.js']
-                }
+                files: '<%%= browserifyFiles %>'
             },
             production: {
-                files: {
-                    '<%%= js %>/app-compiled.js': ['<%%= app %>/app.js']
-                }
+                files: '<%%= browserifyFiles %>'
             }
         },
 
@@ -134,7 +131,7 @@ module.exports = function(grunt) {
                 files: {
                     '<%%= js %>/app-compiled.min.js': ['<%%= js %>/app-compiled.js'],
                     '<%%= js %>/legacy.min.js': [
-                        <% if (includeBabel) { %>'<%%= bower %>/es5-shim/es5-shim.min.js',
+                        <% if (includeBabel || includeReact) { %>'<%%= bower %>/es5-shim/es5-shim.min.js',
                         '<%%= bower %>/es5-shim/es5-sham.min.js',
                         <% } %>'<%%= bower %>/respond/dest/respond.min.js'
                     ]
@@ -341,6 +338,7 @@ module.exports = function(grunt) {
                 options: {
                     watchTask: true,
                     port: 1987,
+                    open: false,
                     server: {
                         baseDir: '<%%= www %>'
                     }

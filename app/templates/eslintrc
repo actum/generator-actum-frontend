@@ -4,9 +4,9 @@
         "node": true,
         "jquery": true
     },
-    "ecmaFeatures": {
-        "jsx": false
-    },
+    "ecmaFeatures": {<% if (includeReact) { %>
+        "jsx": true
+    <% } %>},
     "rules": {
         "semi": 2,
         "quotes": [2, "single"],

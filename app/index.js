@@ -70,7 +70,11 @@ module.exports = yeoman.generators.Base.extend({
                 value: 'grunticon',
                 checked: true
             }, {
-                name: 'BabelJS for ES6 and/or React',
+                name: 'React',
+                value: 'react',
+                checked: true
+            }, {
+                name: 'Babel transpiler for ES6 and/or React/JSX',
                 value: 'babel',
                 checked: true
             }, {
@@ -189,8 +193,8 @@ module.exports = yeoman.generators.Base.extend({
         this.template('Gruntfile.js');
     },
 
-    esLint: function() {
-        this.copy('eslintrc', '.eslintrc');
+    eslint: function() {
+        this.template('eslintrc', '.eslintrc');
         this.copy('eslintrc-dev', '.eslintrc-dev');
     },
 
@@ -223,6 +227,7 @@ module.exports = yeoman.generators.Base.extend({
                 'grunt-contrib-copy',
                 'grunt-contrib-cssmin',
                 'grunt-contrib-less',
+                'less-plugin-glob',
                 'grunt-contrib-uglify',
                 'gruntify-eslint',
                 'grunt-este-watch',
@@ -230,8 +235,11 @@ module.exports = yeoman.generators.Base.extend({
                 'picturefill'
             ];
 
+            if (this.includeReact) {
+                packages.push('react');
+            }
             if (this.includeBabel) {
-                packages.push('babelify', 'react');
+                packages.push('babelify');
             }
             if (this.includeHandlebars) {
                 packages.push('hbsfy', 'handlebars');
@@ -277,7 +285,7 @@ module.exports = yeoman.generators.Base.extend({
             if (this.includeJquery) {
                 components.push('jquery');
             }
-            if (this.includeBabel) {
+            if (this.includeBabel || this.includeReact) {
                 components.push('es5-shim');
             }
             if (this.includeModernizr) {
